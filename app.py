@@ -10,7 +10,8 @@ from config import password
 
 # create engine and connection to postgres
 from sqlalchemy import create_engine
-engine = create_engine(f'postgresql://postgres:{password}@localhost:5432/credit_cards')
+db_name = "credit_cards"
+engine = create_engine(f'postgresql://postgres:{password}@localhost:5432/{db_name}')
 connection = engine.connect()
 connection
 
@@ -19,13 +20,13 @@ app = Flask(__name__)
 @app.route("/")
 def index():
 
-    # import SQL table as pandas
+    # import SQL table as pandas dataframe
     cards_df = pd.read_sql('select * from credit_card', connection)
     
-    # convert pandas column to a list
-    cards_list = cards_df['card'].to_list()
-
-    return render_template("index.html", cards = cards_list)
+    # convert pandas dataframe to json
+    cards_json = cards_df.to_json()
+    
+    return render_template("index.html", cards_to_js = cards_json)
 
 if __name__ == "__main__":
     app.run(debug = True)

@@ -10,9 +10,8 @@
 <body>
 </body>
 <script>
-  // now the list of credit cards is a javascript variable
-  // it can be used in logic.js
-  var cards = '{{cards|tojson}}';
+  // we got the cards_to_js from render_template() in the flask app.
+  var cards = JSON.parse({{cards_to_js|tojson}});
 </script>
 
 <script type="text/javascript" src="static/logic.js"></script>
